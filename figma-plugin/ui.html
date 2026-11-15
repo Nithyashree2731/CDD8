@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>NIE Lab UI Generator</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      margin: 0;
+      padding: 16px;
+      background: #0f172a;
+      color: #f8fafc;
+      box-sizing: border-box;
+    }
+    .header {
+      border-bottom: 1px solid #334155;
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+    h2 {
+      margin: 0 0 4px 0;
+      font-size: 16px;
+      color: #38bdf8;
+    }
+    .meta {
+      font-size: 11px;
+      color: #94a3b8;
+    }
+    .section-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+      margin: 12px 0 8px 0;
+      font-weight: 700;
+    }
+    button {
+      width: 100%;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: #f8fafc;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.15s ease;
+    }
+    button:hover {
+      background: #334155;
+      border-color: #38bdf8;
+      transform: translateY(-1px);
+    }
+    button.primary {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      border-color: #38bdf8;
+    }
+    button.primary:hover {
+      background: linear-gradient(135deg, #0369a1, #1d4ed8);
+    }
+    .badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.15);
+    }
+    .status {
+      margin-top: 14px;
+      font-size: 12px;
+      color: #34d399;
+      min-height: 20px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h2>NIE Lab UI Generator</h2>
+    <div class="meta">Nithyashree D S (4NI25CS130) • Department of CSE</div>
+  </div>
+
+  <div class="section-title">Select Experiment Target:</div>
+
+  <button onclick="generate('exp12-campusbite')">
+    <span>📱 Exp 12: CampusBite (Wireframes)</span>
+    <span class="badge">6 Screens</span>
+  </button>
+
+  <button onclick="generate('exp12-booknest')">
+    <span>📚 Exp 12: BookNest (Wireframes)</span>
+    <span class="badge">6 Screens</span>
+  </button>
+
+  <button class="primary" onclick="generate('exp13-highfidelity')">
+    <span>✨ Exp 13: CampusBite (High-Fidelity)</span>
+    <span class="badge">Full UI & Prototype</span>
+  </button>
+
+  <div id="status" class="status">⚡ Generating layout and components...</div>
+
+  <script>
+    function generate(type) {
+      const status = document.getElementById('status');
+      status.style.display = 'block';
+      status.innerText = '⚡ Generating native Figma frames and layers...';
+      parent.postMessage({ pluginMessage: { type: type } }, '*');
+    }
+
+    window.onmessage = (event) => {
+      if (event.data.pluginMessage && event.data.pluginMessage.status) {
+        const status = document.getElementById('status');
+        status.innerText = '✅ ' + event.data.pluginMessage.status;
+      }
+    };
+  </script>
+</body>
+</html>
