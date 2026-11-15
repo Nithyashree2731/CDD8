@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # Service 1: Web Frontend Application
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: exp10-frontend-service
+    ports:
+      - "8000:5000"
+    environment:
+      - REDIS_HOST=backend-redis
+      - REDIS_PORT=6379
+      - FLASK_ENV=production
+    depends_on:
+      - backend-redis
+    networks:
+      - devops-lab-network
+    restart: unless-stopped
+
+  # Service 2: In-Memory Key-Value Cache
+  backend-redis:
+    image: redis:alpine
+    container_name: exp10-redis-backend
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - devops-lab-network
+    restart: unless-stopped
+
+networks:
+  devops-lab-network:
+    driver: bridge
+
+volumes:
+  redis-data:
+    driver: local
